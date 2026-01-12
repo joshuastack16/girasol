@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girasol Interactivo 🌻</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(#87CEEB,#FFF7C2);
+  font-family:Arial, sans-serif;
+}
+
+.contenedor{
+  text-align:center;
+}
+
+.girasol{
+  position:relative;
+  width:220px;
+  height:220px;
+  animation: flotar 3s ease-in-out infinite;
+}
+
+@keyframes flotar{
+  0%,100%{ transform:translateY(0);}
+  50%{ transform:translateY(-10px);}
+}
+
+.petalo{
+  position:absolute;
+  width:45px;
+  height:90px;
+  background:#FFD700;
+  border-radius:50%;
+  top:10px;
+  left:87px;
+  transform-origin:center 100px;
+}
+
+.centro{
+  position:absolute;
+  width:90px;
+  height:90px;
+  background:#5a3e1b;
+  border-radius:50%;
+  top:65px;
+  left:65px;
+  z-index:2;
+}
+
+.tallo{
+  width:22px;
+  height:220px;
+  background:green;
+  margin:auto;
+}
+
+.mensaje{
+  margin-top:20px;
+  font-size:18px;
+  font-weight:bold;
+  color:#5a3e1b;
+  min-height:40px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+  <div class="girasol" id="girasol"></div>
+  <div class="tallo"></div>
+  <div class="mensaje" id="mensaje">🌻 Tócame 🌻</div>
+</div>
+
+<script>
+const girasol = document.getElementById("girasol");
+const mensaje = document.getElementById("mensaje");
+
+// crear pétalos
+for(let i=0;i<14;i++){
+  const petalo = document.createElement("div");
+  petalo.className = "petalo";
+  petalo.style.transform = `rotate(${i * 25}deg)`;
+  girasol.appendChild(petalo);
+}
+
+// centro
+const centro = document.createElement("div");
+centro.className = "centro";
+girasol.appendChild(centro);
+
+// interacción touch
+let mensajes = [
+  "De mi para,karol ",
+  
+];
+
+let index = 0;
+
+girasol.addEventListener("touchstart", () => {
+  girasol.style.transform = "scale(1.05)";
+  mensaje.textContent = mensajes[index];
+  index = (index + 1) % mensajes.length;
+});
+
+girasol.addEventListener("touchend", () => {
+  girasol.style.transform = "scale(1)";
+});
+</script>
+
+</body>
+</html>
