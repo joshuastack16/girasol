@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Girasol Interactivo 🌻</title>
+<title>Girasol 3D 🌻</title>
 
 <style>
 body{
@@ -14,6 +15,7 @@ body{
   align-items:center;
   background:linear-gradient(#87CEEB,#FFF7C2);
   font-family:Arial, sans-serif;
+  perspective:800px;
 }
 
 .contenedor{
@@ -22,41 +24,44 @@ body{
 
 .girasol{
   position:relative;
-  width:220px;
-  height:220px;
-  animation: flotar 3s ease-in-out infinite;
+  width:260px;
+  height:260px;
+  transform-style:preserve-3d;
+  animation: rotar 18s linear infinite;
 }
 
-@keyframes flotar{
-  0%,100%{ transform:translateY(0);}
-  50%{ transform:translateY(-10px);}
+@keyframes rotar{
+  from{ transform:rotateY(0deg); }
+  to{ transform:rotateY(360deg); }
 }
 
 .petalo{
   position:absolute;
-  width:45px;
-  height:90px;
-  background:#FFD700;
+  width:40px;
+  height:110px;
+  background:linear-gradient(#FFD700,#FFC300);
   border-radius:50%;
   top:10px;
-  left:87px;
-  transform-origin:center 100px;
+  left:110px;
+  transform-origin:center 140px;
+  box-shadow:0 8px 15px rgba(0,0,0,0.2);
 }
 
 .centro{
   position:absolute;
-  width:90px;
-  height:90px;
+  width:100px;
+  height:100px;
   background:#5a3e1b;
   border-radius:50%;
-  top:65px;
-  left:65px;
-  z-index:2;
+  top:80px;
+  left:80px;
+  z-index:5;
+  transform:translateZ(30px);
 }
 
 .tallo{
-  width:22px;
-  height:220px;
+  width:24px;
+  height:240px;
   background:green;
   margin:auto;
 }
@@ -83,11 +88,18 @@ body{
 const girasol = document.getElementById("girasol");
 const mensaje = document.getElementById("mensaje");
 
-// crear pétalos
-for(let i=0;i<14;i++){
+const totalPetalos = 28;
+
+// crear pétalos 3D
+for(let i=0;i<totalPetalos;i++){
   const petalo = document.createElement("div");
   petalo.className = "petalo";
-  petalo.style.transform = `rotate(${i * 25}deg)`;
+  const angulo = (360 / totalPetalos) * i;
+  const profundidad = (i % 2 === 0) ? 40 : 20;
+
+  petalo.style.transform =
+    `rotateZ(${angulo}deg) rotateX(25deg) translateZ(${profundidad}px)`;
+
   girasol.appendChild(petalo);
 }
 
@@ -96,22 +108,26 @@ const centro = document.createElement("div");
 centro.className = "centro";
 girasol.appendChild(centro);
 
-// interacción touch
-let mensajes = [
-  "De mi para ti,karol ",
-  
+// mensajes
+
+ const mensajes = [
+  "🌻 De mí para ti, Karol 🌻"
 ];
 
-let index = 0;
+let i = 0;
+let velocidad = 18;
 
+// interacción touch
 girasol.addEventListener("touchstart", () => {
-  girasol.style.transform = "scale(1.05)";
-  mensaje.textContent = mensajes[index];
-  index = (index + 1) % mensajes.length;
+  velocidad = 6;
+  girasol.style.animationDuration = velocidad + "s";
+  mensaje.textContent = mensajes[i];
+  i = (i + 1) % mensajes.length;
 });
 
 girasol.addEventListener("touchend", () => {
-  girasol.style.transform = "scale(1)";
+  velocidad = 18;
+  girasol.style.animationDuration = velocidad + "s";
 });
 </script>
 
